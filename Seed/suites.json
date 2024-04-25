@@ -1,0 +1,72 @@
+[
+  {
+    "Numero": 111,
+    "TipoSuite": "Standard",
+    "Capacidade": 2,
+    "ValorDiaria": 120.00,
+    "Disponivel": true
+  },
+  {
+    "Numero": 112,
+    "TipoSuite": "Standard",
+    "Capacidade": 2,
+    "ValorDiaria": 120.00,
+    "Disponivel": true
+  },
+  {
+    "Numero": 113,
+    "TipoSuite": "Family",
+    "Capacidade": 4,
+    "ValorDiaria": 200.00,
+    "Disponivel": true
+  },
+  {
+    "Numero": 114,
+    "TipoSuite": "Standard",
+    "Capacidade": 2,
+    "ValorDiaria": 120.00,
+    "Disponivel": true
+  },
+  {
+    "Numero": 115,
+    "TipoSuite": "Family",
+    "Capacidade": 4,
+    "ValorDiaria": 200.00,
+    "Disponivel": true
+  },
+  {
+    "Numero": 211,
+    "TipoSuite": "Family",
+    "Capacidade": 4,
+    "ValorDiaria": 200.00,
+    "Disponivel": true
+  },
+  {
+    "Numero": 212,
+    "TipoSuite": "Standard",
+    "Capacidade": 2,
+    "ValorDiaria": 120.00,
+    "Disponivel": true
+  },
+  {
+    "Numero": 213,
+    "TipoSuite": "Family",
+    "Capacidade": 4,
+    "ValorDiaria": 200.00,
+    "Disponivel": true
+  },
+  {
+    "Numero": 214,
+    "TipoSuite": "Standard",
+    "Capacidade": 2,
+    "ValorDiaria": 120.00,
+    "Disponivel": true
+  },
+  {
+    "Numero": 215,
+    "TipoSuite": "Family",
+    "Capacidade": 4,
+    "ValorDiaria": 200.00,
+    "Disponivel": true
+  }
+]

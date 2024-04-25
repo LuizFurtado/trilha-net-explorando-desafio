@@ -1,25 +1,109 @@
 ﻿using System.Text;
+using Newtonsoft.Json;
 using DesafioProjetoHospedagem.Models;
 
 Console.OutputEncoding = Encoding.UTF8;
 
-// Cria os modelos de hóspedes e cadastra na lista de hóspedes
-List<Pessoa> hospedes = new List<Pessoa>();
+// Utiliza arquivo seed para popular a lista de suítes
+var reservas = new List<Reserva>();
+string suitesJson = File.ReadAllText("Seed/suites.json");
+var suites = JsonConvert.DeserializeObject<List<Suite>>(suitesJson);
 
-Pessoa p1 = new Pessoa(nome: "Hóspede 1");
-Pessoa p2 = new Pessoa(nome: "Hóspede 2");
+// Menu de opções para navegação
+while (true)
+{
+    Console.WriteLine("Selecione uma opção:");
+    Console.WriteLine("1 - Verificar suítes disponíveis");
+    Console.WriteLine("2 - Criar reserva");
+    Console.WriteLine("3 - Listar reservas");
+    Console.WriteLine("4 - Sair");
+    Console.WriteLine();
 
-hospedes.Add(p1);
-hospedes.Add(p2);
+    string opcao = Console.ReadLine();
 
-// Cria a suíte
-Suite suite = new Suite(tipoSuite: "Premium", capacidade: 2, valorDiaria: 30);
+    switch (opcao)
+    {
+        case "1":
+            VerificarSuitesDisponíveis(suites);
+            break;
+        case "2":
+            CriarReserva(suites);
+            break;
+        case "3":
+            ListarReservas();
+            break;
+        case "4":
+            return;
+        default:
+            Console.WriteLine("Opção inválida. Tente novamente.");
+            break;
+    }
+}
 
-// Cria uma nova reserva, passando a suíte e os hóspedes
-Reserva reserva = new Reserva(diasReservados: 10);
-reserva.CadastrarSuite(suite);
-reserva.CadastrarHospedes(hospedes);
+void CriarReserva(List<Suite> suites)
+{
+    Console.WriteLine("Por favor informe o número de hóspedes:");
+    int quantidadeHospedes = int.Parse(Console.ReadLine());
 
-// Exibe a quantidade de hóspedes e o valor da diária
-Console.WriteLine($"Hóspedes: {reserva.ObterQuantidadeHospedes()}");
-Console.WriteLine($"Valor diária: {reserva.CalcularValorDiaria()}");
+    bool suiteDisponivel = suites.Any(s => s.Disponivel && s.Capacidade >= quantidadeHospedes);
+
+    if(!suiteDisponivel)
+    {
+        Console.WriteLine("Nenhuma suíte disponível para a quantidade de hóspedes informada. Tente novamente.");
+        return;
+    }
+
+    var suitesCapacidade = suites.Where(s => s.Capacidade >= quantidadeHospedes).ToList();
+    var hospedes = new List<Pessoa>();
+
+    Console.WriteLine("Essas são as suítes disponíveis para a quantidade de hóspedes informada:");
+    suitesCapacidade.ForEach(suite => Console.WriteLine($"{suite.Numero} - {suite.TipoSuite} - Capacidade: {suite.Capacidade}"));
+
+    Console.WriteLine("Por favor informe o número da suíte:");
+    int suiteEscolhida = int.Parse(Console.ReadLine());
+
+    Console.WriteLine("Por favor informe a quantidade de dias:");
+    int diasReservados = int.Parse(Console.ReadLine());
+
+    for(int i = 0; i < quantidadeHospedes; i++)
+    {
+        Console.WriteLine("Por favor informe o nome do hóspede:");
+        string nomeHospede = Console.ReadLine();
+        hospedes.Add(new Pessoa(nomeHospede));
+    }
+
+    var suiteReserva = suitesCapacidade.First(s => s.Numero == suiteEscolhida);
+    suites.First(s => s.Numero == suiteEscolhida).Disponivel = false;
+
+    var reserva = new Reserva(diasReservados);
+    reserva.CadastrarSuite(suiteReserva);
+    reserva.CadastrarHospedes(hospedes);
+    reservas.Add(reserva);
+
+    Console.WriteLine("Reserva efetuada com sucesso! Confira abaixo os dados da sua reserva:");
+    Console.WriteLine(reserva);
+    Console.WriteLine();
+}
+
+void ListarReservas()
+{
+    if(reservas.Count == 0)
+    {
+        Console.WriteLine("Nenhuma reserva encontrada.");
+        Console.WriteLine();
+        return;
+    }
+
+    Console.WriteLine("Reservas:");
+    reservas.ForEach(reserva => Console.WriteLine(reserva));
+    Console.WriteLine();
+}
+
+void VerificarSuitesDisponíveis(List<Suite> suites)
+{
+    var disponiveis = suites.Where(s => s.Disponivel).ToList();
+    Console.WriteLine("Suites disponíveis:");
+
+    disponiveis.ForEach(suite => Console.WriteLine($"{suite.Numero} - {suite.TipoSuite} - Capacidade: {suite.Capacidade}"));
+    Console.WriteLine();
+}

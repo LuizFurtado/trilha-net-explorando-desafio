@@ -59,5 +59,10 @@ namespace DesafioProjetoHospedagem.Models
 
             return valor;
         }
+
+        public override string ToString()
+        {
+            return $"Suíte: {Suite.Numero} - {DiasReservados} noites, {ObterQuantidadeHospedes()} hóspedes, {CalcularValorDiaria().ToString("C")}";
+        }
     }
 }
